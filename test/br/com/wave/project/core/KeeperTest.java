@@ -3,6 +3,7 @@ package br.com.wave.project.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
@@ -20,12 +21,12 @@ import br.com.wave.repository.enums.RemoveEnum;
 import br.com.wave.repository.exceptions.RepositoryException;
 
 public class KeeperTest {
+	
+	private Keeper keeper;
 
 	private EntityManager manager;
 
 	private EntityTransaction transaction;
-
-	private Keeper keeper;
 
 	@Before
 	public void setUp() {
@@ -52,16 +53,19 @@ public class KeeperTest {
 		EntidadeBasic instance = new EntidadeBasic();
 
 		this.keeper.persist(instance);
-		instance.setStringField("Teste");
-
-		// this.keeper.persist(instance);
-		System.out.println("Id: " + instance.getId());
-		
-		EntidadeBasic novaInstancia = this.manager.find(EntidadeBasic.class, instance.getId());
-		assertEquals("Teste", novaInstancia.getStringField());
-
 		assertNotNull(instance.getId());
 		assertTrue(this.manager.contains(instance));
+
+		this.manager.detach(instance);
+		assertFalse(this.manager.contains(instance));
+
+		String value = "Teste";
+		instance.setStringField(value);
+
+		this.keeper.persist(instance);
+
+		EntidadeBasic actualInstance = this.manager.find(EntidadeBasic.class, instance.getId());
+		assertEquals(value, actualInstance.getStringField());
 	}
 
 	@Test
@@ -69,14 +73,30 @@ public class KeeperTest {
 		EntidadeBasic instance = new EntidadeBasic();
 
 		this.keeper.persist(instance);
-
 		assertNotNull(instance.getId());
 		assertTrue(this.manager.contains(instance));
 
 		this.keeper.remove(instance);
 
+		assertTrue(this.manager.contains(instance));
+		assertNotNull(instance.getId());
+		assertFalse(instance.getActive());
+	}
+
+	@Test
+	public void deveRemoverDeFormaLogicaUmaInstanciaDetachedEmUmRepositorio() throws RepositoryException {
+		EntidadeBasic instance = new EntidadeBasic();
+
+		this.keeper.persist(instance);
 		assertNotNull(instance.getId());
 		assertTrue(this.manager.contains(instance));
+
+		this.manager.detach(instance);
+		assertFalse(this.manager.contains(instance));
+
+		this.keeper.remove(instance);
+
+		assertNotNull(instance.getId());
 		assertFalse(instance.getActive());
 	}
 
@@ -85,14 +105,30 @@ public class KeeperTest {
 		EntidadeBasic instance = new EntidadeBasic();
 
 		this.keeper.persist(instance);
-
 		assertNotNull(instance.getId());
 		assertTrue(this.manager.contains(instance));
 
 		this.keeper.remove(instance, RemoveEnum.LOGICAL);
 
+		assertTrue(this.manager.contains(instance));
+		assertNotNull(instance.getId());
+		assertFalse(instance.getActive());
+	}
+
+	@Test
+	public void deveRemoverDeFormaLogicaComParametroUmaInstanciaDetachedEmUmRepositorio() throws RepositoryException {
+		EntidadeBasic instance = new EntidadeBasic();
+
+		this.keeper.persist(instance);
 		assertNotNull(instance.getId());
 		assertTrue(this.manager.contains(instance));
+
+		this.manager.detach(instance);
+		assertFalse(this.manager.contains(instance));
+
+		this.keeper.remove(instance, RemoveEnum.LOGICAL);
+
+		assertNotNull(instance.getId());
 		assertFalse(instance.getActive());
 	}
 
@@ -101,13 +137,32 @@ public class KeeperTest {
 		EntidadeBasic instance = new EntidadeBasic();
 
 		this.keeper.persist(instance);
-
 		assertNotNull(instance.getId());
 		assertTrue(this.manager.contains(instance));
 
 		this.keeper.remove(instance, RemoveEnum.PHYSICAL);
 
 		assertFalse(this.manager.contains(instance));
+
+		EntidadeBasic actualInstance = this.manager.find(EntidadeBasic.class, instance.getId());
+		assertNull(actualInstance);
+	}
+
+	@Test
+	public void deveRemoverDeFormaFisicaUmaInstanciaDetachedEmUmRepositorio() throws RepositoryException {
+		EntidadeBasic instance = new EntidadeBasic();
+
+		this.keeper.persist(instance);
+		assertNotNull(instance.getId());
+		assertTrue(this.manager.contains(instance));
+
+		this.manager.detach(instance);
+		assertFalse(this.manager.contains(instance));
+
+		this.keeper.remove(instance, RemoveEnum.PHYSICAL);
+
+		EntidadeBasic actualInstance = this.manager.find(EntidadeBasic.class, instance.getId());
+		assertNull(actualInstance);
 	}
 
 	@After
