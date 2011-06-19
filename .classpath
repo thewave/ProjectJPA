@@ -7,7 +7,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/RepositoryJPA"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DbDriverLib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HibernateLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WeldLib"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/RepositoryJPA.jar"/>
 	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/Utils.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

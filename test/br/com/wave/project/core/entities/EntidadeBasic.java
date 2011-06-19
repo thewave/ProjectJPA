@@ -6,6 +6,8 @@ import java.util.Calendar;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @javax.persistence.Entity
@@ -32,6 +34,7 @@ public class EntidadeBasic implements Serializable {
 
 	private Boolean booleanField;
 
+	@Temporal(TemporalType.DATE)
 	private Calendar calendarField;
 
 	private byte[] byteField;
