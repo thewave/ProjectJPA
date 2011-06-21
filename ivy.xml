@@ -24,28 +24,20 @@
         module="ProjectJPA"
         status="integration">
 	</info>
-	<!--dependencies>
+	<dependencies>
 		<dependency org="antlr" name="antlr" rev="2.7.6"/>
-		<dependency org="commons-collections" name="commons-collections" rev="3.1">
-		</dependency>
-		<dependency org="dom4j" name="dom4j" rev="1.6.1">
-		</dependency>
-		<dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.0-api" rev="1.0.0.Final"/>
-		<dependency org="org.hibernate" name="hibernate-jpamodelgen" rev="1.0.0.Final">
-		</dependency>
+		<dependency org="commons-collections" name="commons-collections" rev="3.1"/>
+		<dependency org="dom4j" name="dom4j" rev="1.6.1"/>
 		<dependency org="org.hibernate" name="hibernate" rev="3.5.0-Final"/>
-		<dependency org="javassist" name="javassist" rev="3.9.0.GA">
-		</dependency>
+		<dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.0-api" rev="1.0.0.Final"/>
+		<dependency org="org.hibernate" name="hibernate-jpamodelgen" rev="1.0.0.Final"/>
+		<dependency org="javassist" name="javassist" rev="3.9.0.GA"/>
 		<dependency org="javax.transaction" name="jta" rev="1.1"/>
-		<dependency org="log4j" name="log4j" rev="1.2.15">
-		</dependency>
+		<dependency org="log4j" name="log4j" rev="1.2.15"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.5.8"/>
       	<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.5.8" />
-      	<dependency org="org.mockito" name="mockito-all" rev="1.8.5"/-->
-      	<!-- dependency org="org.jboss.weld" name="weld-se" rev="1.0.1-Final">
-			<exclude name="testng" />
-			<exclude name="slf4j-simple" />
-		</dependency-->      		
-		<!-- dependency org="hsqldb" name="hsqldb" rev="1.8.0.10"/-->   		
-   <!-- /dependencies-->
+      	<dependency org="org.mockito" name="mockito-all" rev="1.8.5"/>
+      	<dependency org="org.jboss.weld.se" name="weld-se" rev="1.1.1.Final"/>
+		<dependency org="hsqldb" name="hsqldb" rev="1.8.0.10"/>   		
+   </dependencies>
 </ivy-module>
