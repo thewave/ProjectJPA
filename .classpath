@@ -5,11 +5,21 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RepositoryJPA"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DbDriverLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HibernateLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WeldLib"/>
-	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/RepositoryJPA.jar"/>
 	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/Utils.jar"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?ivyXmlPath=ivy.xml&amp;confs=*"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/weld/weld-se.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/dbdriver/hsqldb.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/hibernate-jpamodelgen-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/hibernate3.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/hibernate/slf4j-log4j12-1.5.8.jar"/>
+	<classpathentry kind="lib" path="/Users/caiquepeixoto/Dropbox/Projetos/Root/workspace/lib/mockito/mockito-all-1.8.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
