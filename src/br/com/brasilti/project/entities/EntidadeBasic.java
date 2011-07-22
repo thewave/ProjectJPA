@@ -1,16 +1,17 @@
-package br.com.wave.project.core.entities;
+package br.com.brasilti.project.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
-@javax.persistence.Entity
+@Entity
 public class EntidadeBasic implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,6 +39,16 @@ public class EntidadeBasic implements Serializable {
 	private Calendar calendarField;
 
 	private byte[] byteField;
+
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 
 	public Long getId() {
 		return id;

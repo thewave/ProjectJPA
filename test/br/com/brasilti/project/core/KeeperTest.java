@@ -1,4 +1,4 @@
-package br.com.wave.project.core;
+package br.com.brasilti.project.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,13 +15,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.wave.project.core.entities.EntidadeBasic;
-import br.com.wave.repository.core.Keeper;
-import br.com.wave.repository.enums.RemoveEnum;
-import br.com.wave.repository.exceptions.RepositoryException;
+import br.com.brasilti.project.entities.EntidadeBasic;
+import br.com.brasilti.repository.core.Keeper;
+import br.com.brasilti.repository.enums.ErrorEnum;
+import br.com.brasilti.repository.enums.RemoveEnum;
+import br.com.brasilti.repository.exceptions.RepositoryException;
 
 public class KeeperTest {
-	
+
 	private Keeper keeper;
 
 	private EntityManager manager;
@@ -36,6 +37,20 @@ public class KeeperTest {
 		this.manager = container.instance().select(EntityManager.class).get();
 		this.transaction = this.manager.getTransaction();
 		this.transaction.begin();
+	}
+	
+	@Test(expected = RepositoryException.class)
+	public void deveLancarExcecaoQuandoPersistirUmaInstanciaNulaException() throws RepositoryException {
+		this.keeper.persist(null);
+	}
+	
+	@Test
+	public void deveLancarExcecaoQuandoPersistirUmaInstanciaNula() {
+		try {
+			this.keeper.persist(null);
+		} catch (RepositoryException e) {
+			assertEquals(ErrorEnum.NULL_INSTANCE.getMessage(), e.getMessage());
+		}
 	}
 
 	@Test
@@ -66,6 +81,20 @@ public class KeeperTest {
 
 		EntidadeBasic actualInstance = this.manager.find(EntidadeBasic.class, instance.getId());
 		assertEquals(value, actualInstance.getStringField());
+	}
+	
+	@Test(expected = RepositoryException.class)
+	public void deveLancarExcecaoQuandoRemoverUmaInstanciaNulaException() throws RepositoryException {
+		this.keeper.remove(null);
+	}
+	
+	@Test
+	public void deveLancarExcecaoQuandoRemoverUmaInstanciaNula() {
+		try {
+			this.keeper.remove(null);
+		} catch (RepositoryException e) {
+			assertEquals(ErrorEnum.NULL_INSTANCE.getMessage(), e.getMessage());
+		}
 	}
 
 	@Test
