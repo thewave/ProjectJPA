@@ -107,6 +107,7 @@ public class SeekerTest {
 		entidade2.setLongField(2L);
 		entidade2.setBigDecimalField(BigDecimal.ZERO);
 		entidade2.setCalendarField(this.calendar2);
+		entidade2.setEntidadeBasic(entidade0);
 		this.manager.persist(entidade2);
 
 		EntidadeBasic entidade3 = new EntidadeBasic();
@@ -840,6 +841,69 @@ public class SeekerTest {
 			assertTrue(e.getMessage().contains(ErrorEnum.UNEXPECTED_EXCEPTION.getMessage("")));
 		}
 	}
+
+	@Test(expected = RepositoryException.class)
+	public void deveLancarExcecaoQuandoAInstanciaForNulaException() throws RepositoryException {
+		this.seeker.seekByExample(null);
+	}
+
+	@Test
+	public void deveLancarExcecaoQuandoAInstanciaForNula() {
+		try {
+			this.seeker.seekByExample(null);
+		} catch (RepositoryException e) {
+			assertEquals(ErrorEnum.NULL_INSTANCE.getMessage(), e.getMessage());
+		}
+	}
+
+	@Test
+	public void deveRetornarUmaInstanciaAPartirDeUmExemplo() throws RepositoryException {
+		EntidadeBasic instance = new EntidadeBasic();
+
+		Field id = ReflectionUtil.getField(FieldEnum.ID.getValue(), EntidadeBasic.class);
+		ReflectionUtil.set(Long.valueOf(100), id, instance);
+
+		Field version = ReflectionUtil.getField(FieldEnum.VERSION.getValue(), EntidadeBasic.class);
+		ReflectionUtil.set(Integer.valueOf(100), version, instance);
+
+		Field active = ReflectionUtil.getField(FieldEnum.ACTIVE.getValue(), EntidadeBasic.class);
+		ReflectionUtil.set(Boolean.FALSE, active, instance);
+
+		instance.setLongField(Long.valueOf(1));
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(1, list.size());
+		assertEquals("UmEntidadeBasic", list.get(0).getStringField());
+	}
+
+	@Test
+	public void deveRetornarDuasInstanciaAPartirDeUmExemplo() throws RepositoryException {
+		EntidadeBasic instance = new EntidadeBasic();
+		instance.setStringField("EntidadeBasic");
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(2, list.size());
+		assertEquals("EntidadeBasicZero", list.get(0).getStringField());
+		assertEquals("UmEntidadeBasic", list.get(1).getStringField());
+	}
+
+	//TODO
+//	@Test
+//	public void deveRetornarUmaInstanciaAPartirDeUmExemploComAssociacao() throws RepositoryException {
+//		EntidadeBasic instance = new EntidadeBasic();
+//
+//		EntidadeBasic entidadeBasic = new EntidadeBasic();
+//		entidadeBasic.setStringField("Zero");
+//
+//		instance.setEntidadeBasic(entidadeBasic);
+//
+//		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+//
+//		assertEquals(1, list.size());
+//		assertEquals("BasicDoisEntidade", list.get(0).getStringField());
+//	}
 
 	@After
 	public void tearDown() {

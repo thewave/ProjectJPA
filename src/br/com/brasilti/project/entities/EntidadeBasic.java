@@ -7,6 +7,7 @@ import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
@@ -39,6 +40,9 @@ public class EntidadeBasic implements Serializable {
 	private Calendar calendarField;
 
 	private byte[] byteField;
+
+	@OneToOne
+	private EntidadeBasic entidadeBasic;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -116,6 +120,14 @@ public class EntidadeBasic implements Serializable {
 
 	public void setByteField(byte[] byteField) {
 		this.byteField = byteField;
+	}
+
+	public EntidadeBasic getEntidadeBasic() {
+		return entidadeBasic;
+	}
+
+	public void setEntidadeBasic(EntidadeBasic entidadeBasic) {
+		this.entidadeBasic = entidadeBasic;
 	}
 
 }
