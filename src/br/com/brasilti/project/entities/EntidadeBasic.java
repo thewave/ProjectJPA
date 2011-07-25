@@ -130,4 +130,9 @@ public class EntidadeBasic implements Serializable {
 		this.entidadeBasic = entidadeBasic;
 	}
 
+	@Override
+	public String toString() {
+		return "EntidadeBasic [stringField=" + stringField + "]";
+	}
+
 }

@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -46,6 +45,7 @@ import br.com.brasilti.repository.propositions.NotIn;
 import br.com.brasilti.repository.propositions.Or;
 import br.com.brasilti.repository.propositions.Order;
 import br.com.brasilti.repository.propositions.Proposition;
+import br.com.brasilti.utils.collection.CollectionUtil;
 import br.com.brasilti.utils.reflection.ReflectionUtil;
 
 public class SeekerTest {
@@ -97,6 +97,7 @@ public class SeekerTest {
 		entidade1.setBigDecimalField(BigDecimal.ONE);
 		entidade1.setBooleanField(Boolean.FALSE);
 		entidade1.setCalendarField(this.calendar1);
+		entidade1.setEntidadeBasic(entidade0);
 		this.manager.persist(entidade1);
 
 		this.calendar2.add(Calendar.YEAR, 4);
@@ -107,7 +108,7 @@ public class SeekerTest {
 		entidade2.setLongField(2L);
 		entidade2.setBigDecimalField(BigDecimal.ZERO);
 		entidade2.setCalendarField(this.calendar2);
-		entidade2.setEntidadeBasic(entidade0);
+		entidade2.setEntidadeBasic(entidade1);
 		this.manager.persist(entidade2);
 
 		EntidadeBasic entidade3 = new EntidadeBasic();
@@ -496,14 +497,14 @@ public class SeekerTest {
 
 	@Test
 	public void naoDeveRetornarInstanciasForaDeUmalist() throws RepositoryException {
-		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new In("stringField", Arrays.asList("Classe", "Interface", "Enum")));
+		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new In("stringField", CollectionUtil.convert("Classe", "Interface", "Enum")));
 
 		assertTrue(list.isEmpty());
 	}
 
 	@Test
 	public void deveRetornarUmaInstanciaPresenteEmUmalist() throws RepositoryException {
-		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new In("stringField", Arrays.asList("Classe", "EntidadeBasicZero", "Enum")));
+		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new In("stringField", CollectionUtil.convert("Classe", "EntidadeBasicZero", "Enum")));
 
 		assertEquals(1, list.size());
 		assertEquals("EntidadeBasicZero", list.get(0).getStringField());
@@ -526,14 +527,14 @@ public class SeekerTest {
 
 	@Test
 	public void naoDeveRetornarInstanciasPresentesEmUmalist() throws RepositoryException {
-		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new NotIn("stringField", Arrays.asList("EntidadeBasicZero", "UmEntidadeBasic", "BasicDoisEntidade")));
+		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new NotIn("stringField", CollectionUtil.convert("EntidadeBasicZero", "UmEntidadeBasic", "BasicDoisEntidade")));
 
 		assertTrue(list.isEmpty());
 	}
 
 	@Test
 	public void deveRetornarUmaInstanciaForaDeUmalist() throws RepositoryException {
-		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new NotIn("stringField", Arrays.asList("EntidadeBasicZero", "Interface", "BasicDoisEntidade")));
+		List<EntidadeBasic> list = this.seeker.seekAll(EntidadeBasic.class, new NotIn("stringField", CollectionUtil.convert("EntidadeBasicZero", "Interface", "BasicDoisEntidade")));
 
 		assertEquals(1, list.size());
 		assertEquals("UmEntidadeBasic", list.get(0).getStringField());
@@ -889,21 +890,109 @@ public class SeekerTest {
 		assertEquals("UmEntidadeBasic", list.get(1).getStringField());
 	}
 
-	//TODO
-//	@Test
-//	public void deveRetornarUmaInstanciaAPartirDeUmExemploComAssociacao() throws RepositoryException {
-//		EntidadeBasic instance = new EntidadeBasic();
-//
-//		EntidadeBasic entidadeBasic = new EntidadeBasic();
-//		entidadeBasic.setStringField("Zero");
-//
-//		instance.setEntidadeBasic(entidadeBasic);
-//
-//		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
-//
-//		assertEquals(1, list.size());
-//		assertEquals("BasicDoisEntidade", list.get(0).getStringField());
-//	}
+	@Test
+	public void deveRetornarUmaInstanciaAPartirDeUmExemploComAssociacao() throws RepositoryException {
+		EntidadeBasic instance = new EntidadeBasic();
+
+		EntidadeBasic entidadeBasic = new EntidadeBasic();
+		entidadeBasic.setStringField("Um");
+
+		instance.setEntidadeBasic(entidadeBasic);
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(1, list.size());
+		assertEquals("BasicDoisEntidade", list.get(0).getStringField());
+	}
+
+	@Test
+	public void deveRetornarUmaInstanciaAPartirDeUmExemploSemAssociacao() throws RepositoryException {
+		EntidadeBasic instance = new EntidadeBasic();
+		instance.setStringField("EntidadeBasic");
+		instance.setIntegerField(1);
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(1, list.size());
+		assertEquals("UmEntidadeBasic", list.get(0).getStringField());
+	}
+
+	@Test
+	public void deveRetornarUmaInstanciaAPartirDeUmExemploComStringEAssociacao() throws RepositoryException {
+		EntidadeBasic entidadeBasic = new EntidadeBasic();
+		entidadeBasic.setStringField("Um");
+
+		EntidadeBasic instance = new EntidadeBasic();
+		instance.setStringField("Entidade");
+		instance.setEntidadeBasic(entidadeBasic);
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(1, list.size());
+		assertEquals("BasicDoisEntidade", list.get(0).getStringField());
+	}
+
+	@Test
+	public void deveRetornarUmaInstanciaAPartirDeUmExemploComBigDecimalEAssociacao() throws RepositoryException {
+		EntidadeBasic entidadeBasic = new EntidadeBasic();
+		entidadeBasic.setStringField("Um");
+
+		EntidadeBasic instance = new EntidadeBasic();
+		instance.setBigDecimalField(BigDecimal.ZERO);
+		instance.setEntidadeBasic(entidadeBasic);
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(1, list.size());
+		assertEquals("BasicDoisEntidade", list.get(0).getStringField());
+	}
+
+	@Test
+	public void naoDeveRetornarUmaInstanciaAPartirDeUmExemploComAssociacao() throws RepositoryException {
+		EntidadeBasic entidadeBasic = new EntidadeBasic();
+		entidadeBasic.setStringField("Classe");
+
+		EntidadeBasic instance = new EntidadeBasic();
+		instance.setStringField("Entidade");
+		instance.setEntidadeBasic(entidadeBasic);
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertTrue(list.isEmpty());
+	}
+
+	@Test
+	public void deveRetornarUmaInstanciaAPartirDeUmaCadeia() throws RepositoryException {
+		EntidadeBasic exemplo = new EntidadeBasic();
+		exemplo.setStringField("Zero");
+
+		EntidadeBasic entidadeBasic = new EntidadeBasic();
+		entidadeBasic.setEntidadeBasic(exemplo);
+
+		EntidadeBasic instance = new EntidadeBasic();
+		instance.setEntidadeBasic(entidadeBasic);
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(1, list.size());
+		assertEquals("BasicDoisEntidade", list.get(0).getStringField());
+	}
+
+	@Test
+	public void deveRetornarUmaInstanciaAPartirDeUmaCombinacao() throws RepositoryException {
+		EntidadeBasic entidadeBasic = new EntidadeBasic();
+		entidadeBasic.setStringField("Um");
+
+		EntidadeBasic instance = new EntidadeBasic();
+		instance.setStringField("Entidade");
+		instance.setBigDecimalField(BigDecimal.ZERO);
+		instance.setEntidadeBasic(entidadeBasic);
+
+		List<EntidadeBasic> list = this.seeker.seekByExample(instance);
+
+		assertEquals(1, list.size());
+		assertEquals("BasicDoisEntidade", list.get(0).getStringField());
+	}
 
 	@After
 	public void tearDown() {
